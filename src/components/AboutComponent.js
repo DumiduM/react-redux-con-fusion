@@ -1,16 +1,17 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
-
+import { baseUrl } from '../shared/baseUrl';
+import { Fade, Stagger } from 'react-animation-components';
 function About(props) {
 
-    const leaders = props.leaders.map((leader) => {
+    const leaders = props.leaders.leaders.map((leader) => {
         return (
             <p>Leader {leader.name}</p>
         );
     });
 
-    return(
+    return (
         <div className="container">
             <div className="row">
                 <Breadcrumb>
@@ -20,7 +21,7 @@ function About(props) {
                 <div className="col-12">
                     <h3>About Us</h3>
                     <hr />
-                </div>                
+                </div>
             </div>
             <div className="row row-content">
                 <div className="col-12 col-md-6">
@@ -75,36 +76,41 @@ function About(props) {
 }
 
 function RenderLeader({ leaders }) {
+
     if (leaders != null) {
-      const leaderListItem = leaders.map((leader) => {
+        const leaderListItem = leaders.leaders.map((leader) => {
+            return (
+                <Stagger in>
+                    <Fade in>
+                        <Media>
+                            <Media style={{ 'margin-right': '40px' }}>
+                                <Media object src={baseUrl + leader.image} />
+                            </Media>
+                            <Media body>
+                                <Media heading>
+                                    {leader.name}
+                                </Media>
+                                {leader.designation}<br />
+                                {leader.description}
+                                <br /><br />
+                            </Media>
+                        </Media>
+                    </Fade>
+                </Stagger>
+            );
+        });
         return (
-            <Media>
-            <Media style ={{'margin-right':'40px'}}>
-              <Media object src={leader.image}/>
-            </Media>
-            <Media body>
-              <Media heading>
-                {leader.name}
-              </Media>
-                {leader.designation}<br/>
-                {leader.description}
-                <br/><br/>
-            </Media>
-          </Media>
+            <div className="col-12">
+                {leaderListItem}
+            </div>
         );
-      });
-      return (
-        <div className="col-12">
-            {leaderListItem}
-        </div>
-      );
     }
     else {
-      return (
-        <div>
-        </div>
-      );
+        return (
+            <div>
+            </div>
+        );
     }
-  }
+}
 
-export default About;    
+export default About;
